@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Videollamada Profesional con Caro - Terapeuta Online</title>
+  <style>
+    /* Reset básico */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #0f4c75;
+      color: #fff;
+      padding: 25px 15px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    header h1 {
+      margin: 0;
+      font-weight: 900;
+      font-size: 2.5rem;
+      letter-spacing: 2px;
+    }
+    header p {
+      font-style: italic;
+      font-weight: 500;
+      margin-top: 6px;
+      font-size: 1.1rem;
+      color: #bbe1fa;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px 15px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 30px;
+    }
+
+    /* Sección de videollamada */
+    #videocall-section {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #videocall-section h2 {
+      margin-bottom: 15px;
+      font-size: 1.9rem;
+      color: #0f4c75;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .video-container {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    video {
+      width: 320px;
+      height: 240px;
+      background: #000;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      border: 3px solid #3282b8;
+      object-fit: cover;
+      transition: box-shadow 0.3s ease;
+    }
+    video:hover {
+      box-shadow: 0 0 15px 5px #3282b8;
+    }
+
+    .controls {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    button {
+      background: #3282b8;
+      border: none;
+      color: white;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 12px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(50,130,184,0.5);
+      transition: background 0.3s ease;
+      user-select: none;
+    }
+    button:hover:not(:disabled) {
+      background: #1762a3;
+    }
+    button:disabled {
+      background: #a5c8e8;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    #status {
+      font-weight: 700;
+      color: #1762a3;
+      min-height: 22px;
+      text-align: center;
+      margin-bottom: 12px;
+      user-select: none;
+    }
+
+    /* Sección terapeuta info */
+    #info-section {
+      background: #fff;
+      border-radius: 12px;
+      padding: 25px 20px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    #info-section h2 {
+      color: #0f4c75;
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    #info-section p {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: #2f3640;
+      margin-bottom: 20px;
+      user-select: text;
+    }
+
+    #info-section ul {
+      list-style-type: disc;
+      margin-left: 20px;
+      color: #222;
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+    }
+    #info-section ul li {
+      margin-bottom: 8px;
+    }
+
+    /* Formulario pedir turno */
+    form {
+      background: #bbe1fa;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.15);
+    }
+    form label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+      margin-top: 12px;
+      color: #0f4c75;
+      user-select: none;
+    }
+    form input, form textarea, form select {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 1rem;
+      border: 2px solid #3282b8;
+      border-radius: 6px;
+      outline-offset: 0;
+      transition: border-color 0.3s ease;
+      resize: vertical;
+    }
+    form input:focus, form textarea:focus, form select:focus {
+      border-color: #1762a3;
+    }
+
+    form textarea {
+      min-height: 80px;
+    }
+    form button[type="submit"] {
+      margin-top: 18px;
+      background: #0f4c75;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(15,76,117,0.4);
+      user-select: none;
+    }
+    form button[type="submit"]:hover:not(:disabled) {
+      background: #093a58;
+    }
+    form button[type="submit"]:disabled {
+      background: #a5c8e8;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    #form-message {
+      margin-top: 12px;
+      font-weight: 700;
+      color: #196619;
+      user-select: none;
+      min-height: 22px;
+    }
+
+    /* Footer */
+    footer {
+      background: #0f4c75;
+      color: #bbe1fa;
+      text-align: center;
+      padding: 18px 15px;
+      font-size: 0.9rem;
+      user-select: none;
+      margin-top: auto;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      video {
+        width: 100%;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Terapeuta Caro - Videollamada Profesional</h1>
+  <p>Conectate fácil y seguro para tu sesión online en vivo</p>
+</header>
+
+<main>
+  <!-- Sección Videollamada -->
+  <section id="videocall-section" aria-label="Videollamada en vivo con Caro">
+    <h2>Sesión en vivo</h2>
+
+    <div class="video-container" aria-live="polite" aria-atomic="true">
+      <video id="local" autoplay muted playsinline></video>
+      <video id="remote" autoplay playsinline></video>
+    </div>
+
+    <div class="controls" role="group" aria-label="Controles de llamada">
+      <button id="startBtn">Iniciar llamada</button>
+      <button id="endBtn" disabled>Cortar llamada</button>
+    </div>
+
+    <div id="status" role="status" aria-live="polite" aria-atomic="true">
+      Esperando conexión...
+    </div>
+  </section>
+
+  <!-- Sección Información terapeuta y formulario turno -->
+  <section id="info-section" aria-label="Información y pedido de turno">
+    <h2>Conocé a Caro, tu terapeuta</h2>
+    <p>
+      Caro es terapeuta profesional con más de 10 años de experiencia en acompañar personas con dificultades emocionales, ansiedad y estrés.
+      Su enfoque es personalizado, con escucha activa y técnicas modernas para ayudarte a sentirte mejor.
+    </p>
+
+    <ul>
+      <li>Especialista en terapia cognitivo-conductual y mindfulness</li>
+      <li>Atención personalizada y sesiones en vivo por videollamada</li>
+      <li>Turnos fáciles de pedir y seguimiento constante</li>
+      <li>Espacio seguro y confidencial para tu bienestar</li>
+    </ul>
+
+    <h3>Pedir turno online</h3>
+    <form id="turnoForm" novalidate>
+      <label for="nombre">Nombre completo *</label>
+      <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre completo" autocomplete="name" />
+
+      <label for="email">Correo electrónico *</label>
+      <input type="email" id="email" name="email" required placeholder="tu@mail.com" autocomplete="email" />
+
+      <label for="telefono">Teléfono</label>
+      <input type="tel" id="telefono" name="telefono" placeholder="+54 9 11 1234-5678" autocomplete="tel" />
+
+      <label for="fecha">Fecha preferida *</label>
+      <input type="date" id="fecha" name="fecha" required min="" />
+
+      <label for="motivo">Motivo de la consulta *</label>
+      <textarea id="motivo" name="motivo" required placeholder="Contanos brevemente tu motivo"></textarea>
+
+      <button type="submit">Enviar pedido</button>
+    </form>
+    <div id="form-message" role="alert" aria-live="assertive"></div>
+  </section>
+</main>
+
+<footer>
+  &copy; 2025 Terapeuta Caro. Todos los derechos reservados.
+</footer>
+
+<script>
+  // Set min date for date input to today
+  const fechaInput = document.getElementById("fecha");
+  const hoy = new Date().toISOString().split("T")[0];
+  fechaInput.setAttribute("min", hoy);
+
+  // Form submit handling
+  const form = document.getElementById("turnoForm");
+  const formMessage = document.getElementById("form-message");
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+
+    if (!form.checkValidity()) {
+      formMessage.style.color = "red";
+      formMessage.textContent = "Por favor, completá todos los campos obligatorios.";
+      return;
+    }
+
+    // Simulación de envío real:
+    formMessage.style.color = "green";
+    formMessage.textContent = "Pedido enviado correctamente. Caro se pondrá en contacto contigo pronto.";
+
+    form.reset();
+  });
+
+  // VIDEOLLAMADA WEBSOCKET + WebRTC
+
+  const startBtn = document.getElementById("startBtn");
+  const endBtn = document.getElementById("endBtn");
+  const status = document.getElementById("status");
+
+  let localStream;
+  let pc;
+  let socket;
+
+  const configuration = {
+    iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
+  };
+
+  function resetCall() {
+    if (pc) {
+      pc.getSenders().forEach(sender => {
+        if (sender.track) sender.track.stop();
+      });
+      pc.close();
+      pc = null;
+    }
+    if (localStream) {
+      localStream.getTracks().forEach(t => t.stop());
+      localStream = null;
+    }
+    status.textContent = "Llamada finalizada.";
+    startBtn.disabled = false;
+    endBtn.disabled = true;
+  }
+
+  function setupWebSocket() {
+    socket = new WebSocket("wss://velvet-briefs-ellis-showers.trycloudflare.com");
+
+    socket.onopen = () => {
+      status.textContent = "Conectado al servidor.";
+    };
+
+    socket.onerror = e => {
+      status.textContent = "Error en conexión WebSocket.";
+      console.error(e);
+    };
+
+    socket.onclose = () => {
+      status.textContent = "Desconectado del servidor.";
+      resetCall();
+    };
+
+    socket.onmessage = async event => {
+      let data;
+      try {
+        data = JSON.parse(event.data);
+      } catch {
+        console.warn("Mensaje WebSocket inválido");
+        return;
+      }
+
+      if (!pc) createPeerConnection();
+
+      if (data.offer) {
+        status.textContent = "Recibiendo llamada...";
+        await pc.setRemoteDescription(new RTCSessionDescription(data.offer));
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        localStream = stream;
+        local.srcObject = stream;
+        stream.getTracks().forEach(track => pc.addTrack(track, stream));
+
+        const answer = await pc.createAnswer();
+        await pc.setLocalDescription(answer);
+        socket.send(JSON.stringify({ answer }));
+      } else if (data.answer) {
+        await pc.setRemoteDescription(new RTCSessionDescription(data.answer));
+        status.textContent = "Llamada establecida.";
+      } else if (data.candidate) {
+        try {
+          await pc.addIceCandidate(new RTCIceCandidate(data.candidate));
+        } catch (e) {
+          console.warn("Error agregando ICE candidate", e);
+        }
+      }
+    };
+  }
+
+  function createPeerConnection() {
+    pc = new RTCPeerConnection(configuration);
+
+    pc.onicecandidate = event => {
+      if (event.candidate) socket.send(JSON.stringify({ candidate: event.candidate }));
+    };
+
+    pc.ontrack = event => {
+      remote.srcObject = event.streams[0];
+    };
+
+    pc.onconnectionstatechange = () => {
+      if (pc.connectionState === "disconnected" || pc.connectionState === "failed" || pc.connectionState === "closed") {
+        resetCall();
+      }
+    };
+  }
+
+  async function startCall() {
+    startBtn.disabled = true;
+    endBtn.disabled = false;
+    status.textContent = "Iniciando llamada...";
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+      setupWebSocket();
+      // Esperar que abra para iniciar oferta
+      await new Promise(resolve => {
+        socket.onopen = () => {
+          status.textContent = "Conectado al servidor.";
+          resolve();
+        };
+      });
+    }
+    if (!pc) createPeerConnection();
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      localStream = stream;
+      local.srcObject = stream;
+      stream.getTracks().forEach(track => pc.addTrack(track, stream));
+
+      const offer = await pc.createOffer();
+      await pc.setLocalDescription(offer);
+      socket.send(JSON.stringify({ offer }));
+    } catch (err) {
+      console.error("Error accediendo a cámara/micro:", err);
+      status.textContent = "Error: no se pudo acceder a cámara o micrófono.";
+      startBtn.disabled = false;
+      endBtn.disabled = true;
+    }
+  }
+
+  function endCall() {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.close();
+    }
+    resetCall();
+  }
+
+  startBtn.addEventListener("click", startCall);
+  endBtn.addEventListener("click", endCall);
+
+  // Para evitar que al cerrar la pestaña quede la cámara activa
+  window.addEventListener("beforeunload", () => {
+    if (pc) {
+      pc.getSenders().forEach(sender => {
+        if (sender.track) sender.track.stop();
+      });
+      pc.close();
+    }
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.close();
+    }
+  });
+</script>
+
+</body>
+</html>
